@@ -8,6 +8,8 @@ EMAIL = "scoutme51@gmail.com"
 PASSWORD = "hpyf grxp bddk jtaf"
 TUJUAN = "android@support.whatsapp.com"
 
+JUMLAH_KIRIM = 100
+
 
 @app.route("/")
 def index():
