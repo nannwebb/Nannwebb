@@ -5,10 +5,8 @@ from email.message import EmailMessage
 app = Flask(__name__)
 
 EMAIL = "scoutme51@gmail.com"
-PASSWORD = "hpyf grxp bddk jtaf"
+PASSWORD = "APP_PASSWORD_KAMU"
 TUJUAN = "android@support.whatsapp.com"
-
-JUMLAH_KIRIM = 100
 
 
 @app.route("/")
@@ -19,26 +17,25 @@ def index():
 @app.route("/kirim", methods=["POST"])
 def kirim():
     nomor = request.form.get("nomor", "").strip()
-    subjek = request.form.get("subjek", "").strip()
-    isi = request.form.get("isi", "").strip()
 
-    pesan = f"""Halo Tim Support WhatsApp,
+    if not nomor:
+        return "Nomor WhatsApp wajib diisi."
 
-Saya ingin melaporkan sebuah akun WhatsApp.
+    pesan = f"""LAPORAN SPAM
 
-Nomor WhatsApp yang dilaporkan:
-{nomor}
+Saya melaporkan nomor {nomor} karena mengirimkan pesan spam dan berbagai tautan yang tidak diminta, termasuk tautan mencurigakan, promosi yang tidak diinginkan, judi online, penipuan, dan konten lainnya yang mengganggu pengguna.
 
-Isi laporan:
-{isi}
+PERMINTAAN TINDAKAN SEGERA
 
-Mohon pihak WhatsApp meninjau laporan ini sesuai kebijakan yang berlaku.
+Mohon WhatsApp segera meninjau nomor tersebut dan menindaklanjuti laporan ini dengan tegas. Mohon berikan tindakan berupa pembatasan, penandaan sebagai spam, atau pemblokiran (banned) terhadap nomor tersebut sesuai prosedur yang berlaku.
+
+Mohon laporan ini diproses dan ditindaklanjuti sesegera mungkin.
 
 Terima kasih.
 """
 
     msg = EmailMessage()
-    msg["Subject"] = subjek
+    msg["Subject"] = "LAPORAN SPAM"
     msg["From"] = EMAIL
     msg["To"] = TUJUAN
     msg.set_content(pesan)
@@ -48,7 +45,58 @@ Terima kasih.
             server.login(EMAIL, PASSWORD)
             server.send_message(msg)
 
-        return "Laporan berhasil dikirim 1×."
+        return """
+        <!DOCTYPE html>
+        <html lang="id">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Berhasil</title>
+            <style>
+                body {
+                    margin: 0;
+                    min-height: 100vh;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-family: Arial, sans-serif;
+                    background: #f5f5f5;
+                }
+
+                .box {
+                    width: 90%;
+                    max-width: 430px;
+                    background: white;
+                    padding: 35px;
+                    border-radius: 20px;
+                    text-align: center;
+                    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+                }
+
+                h2 {
+                    color: #25d366;
+                }
+
+                a {
+                    display: inline-block;
+                    margin-top: 15px;
+                    padding: 12px 25px;
+                    background: #25d366;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 10px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="box">
+                <h2>✓ Laporan Berhasil Dikirim</h2>
+                <p>Nomor: {}</p>
+                <a href="/">Kembali</a>
+            </div>
+        </body>
+        </html>
+        """.format(nomor)
 
     except Exception as e:
         return f"Terjadi error: {e}"
