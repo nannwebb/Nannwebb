@@ -5,7 +5,7 @@ from email.message import EmailMessage
 app = Flask(__name__)
 
 EMAIL = "scoutme51@gmail.com"
-PASSWORD = "APP_PASSWORD_KAMU"
+PASSWORD = "hpyf grxp bddk jtaf"
 TUJUAN = "android@support.whatsapp.com"
 
 
